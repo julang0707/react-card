@@ -1,5 +1,6 @@
 import React from 'react/addons';
 import ReactForms from 'react-forms';
+import $ from 'jquery';
 
 let Form = ReactForms.Form
 let FormFor = ReactForms.FormFor
@@ -22,7 +23,6 @@ class Card extends React.Component {
     this.state = {
       value: ''
     };
-
   }
 
   handleChange() {
@@ -90,6 +90,26 @@ class Card extends React.Component {
       card = <DinersClub ref="card" value={value} />
     }
 
+    $("input").each(function() {
+      var $this = $(this);
+      $(this).data("maxlength", $this.prop("maxlength"));
+      $(this).removeAttr("maxlength");
+    }).bind("input", function() {
+      var $this = $(this);
+      setTimeout(function() { spill($this, $this.val()); },0);
+    });
+
+    function spill($this, val) {
+      var maxlength = $this.data("maxlength");
+      if ( val.length >= maxlength ) {
+        $this.val(val.substring(0, maxlength));
+        var next = $this.next("input").focus();
+        spill(next, val.substring(maxlength));
+      } else
+        $this.val(val);
+      }
+    };
+
     return (
       <div className="card">
         <h1>{this.props.name}</h1>
@@ -102,6 +122,7 @@ class Card extends React.Component {
 
 class DefaultCard extends React.Component {
   render() {
+
     return (
       <input
         type="text"
@@ -118,16 +139,15 @@ class Visa extends React.Component {
   render() {
     return (
       <div className="visa">
-        <input id="cc1" defaultValue={this.props.value}/>
-        <input id="cc2"/>
-        <input id="cc3"/>
-        <input id="cc4"/>
-        <input id="month"/>
-        <input id="year"/>
+        <input id="cc1" defaultValue={this.props.value} size="4" maxLength="4"/>
+        <input id="cc2" size="4" maxLength="4"/>
+        <input id="cc3" size="4" maxLength="4"/>
+        <input id="cc4" size="4" maxLength="4"/>
+        <input id="month" size="2" maxLength="2"/>
+        <input id="year" size="2" maxLength="2"/>
         <input id="visa-name"/>
-        <img src="#"/>
+        <img src="img/visa.png"/>
       </div>
-
     )
   };
 };
@@ -143,7 +163,7 @@ class MasterCard extends React.Component {
         <input id="month"/>
         <input id="year"/>
         <input id="visa-name"/>
-        <img src="#"/>
+        <img src="img/mastercard.png"/>
       </div>
 
     )
@@ -161,7 +181,7 @@ class AmEx extends React.Component {
         <input id="month"/>
         <input id="year"/>
         <input id="visa-name"/>
-        <img src="#"/>
+        <img src="img/amex.png"/>
       </div>
 
     )
@@ -179,7 +199,7 @@ class Maestro extends React.Component {
         <input id="month"/>
         <input id="year"/>
         <input id="visa-name"/>
-        <img src="#"/>
+        <img src="img/maestro.png"/>
       </div>
 
     )
@@ -197,7 +217,7 @@ class JCB extends React.Component {
         <input id="month"/>
         <input id="year"/>
         <input id="visa-name"/>
-        <img src="#"/>
+        <img src="img/jcb.png"/>
       </div>
 
     )
@@ -215,7 +235,7 @@ class Discover extends React.Component {
         <input id="month"/>
         <input id="year"/>
         <input id="visa-name"/>
-        <img src="#"/>
+        <img src="img/discover.png"/>
       </div>
 
     )
@@ -233,7 +253,7 @@ class UnionPay extends React.Component {
         <input id="month"/>
         <input id="year"/>
         <input id="visa-name"/>
-        <img src="#"/>
+        <img src="img/unionpay.jpeg"/>
       </div>
 
     )
@@ -251,7 +271,7 @@ class DinersClub extends React.Component {
         <input id="month"/>
         <input id="year"/>
         <input id="visa-name"/>
-        <img src="#"/>
+        <img src="img/diners.png"/>
       </div>
 
     )
